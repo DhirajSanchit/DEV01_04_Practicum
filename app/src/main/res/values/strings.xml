@@ -15,4 +15,9 @@
     <string name="password_entry_field">Password</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="email_entry_field">Email adress</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="signup_login_errormessage">Please fill in all the fields !</string>
+    <string name="error_title">Doh !</string>
+    <string name="logout_label">Log out</string>
+
 </resources>

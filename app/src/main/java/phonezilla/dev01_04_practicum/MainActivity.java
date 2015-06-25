@@ -3,6 +3,7 @@ package phonezilla.dev01_04_practicum;
 import java.util.Locale;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,10 +21,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.parse.ParseAnalytics;
+import com.parse.ParseUser;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
+public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -42,13 +47,24 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
      */
     ViewPager mViewPager;
 
+    public final static String TAG = MainActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        ParseAnalytics.trackAppOpened(getIntent());
+
+
+        //Check if a user is logged in. If not make the user log in or sign up to continue
+        ParseUser currentApplicationUser = ParseUser.getCurrentUser();
+        if( currentApplicationUser == null ) {
+            navigateToLoginScreen();
+        } else {
+            Log.i(TAG, currentApplicationUser.getUsername());
+        }
+
 
 
         // Set up the action bar.
@@ -86,6 +102,13 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         }
     }
 
+    private void navigateToLoginScreen() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -93,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -102,8 +126,9 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_log_out) {
+            ParseUser.logOut();
+            navigateToLoginScreen();
         }
 
         return super.onOptionsItemSelected(item);
@@ -194,5 +219,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
             return rootView;
         }
     }
+
+
 
 }
