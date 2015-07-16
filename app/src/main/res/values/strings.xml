@@ -19,5 +19,8 @@
     <string name="signup_login_errormessage">Please fill in all the fields !</string>
     <string name="error_title">Doh !</string>
     <string name="logout_label">Log out</string>
+    <string name="empty_inbox">No new messages !</string>
+    <string name="empty_friendsbox">Add friends to begin</string>
+    <string name="title_activity_add_friends">Add Friends</string>
 
 </resources>
