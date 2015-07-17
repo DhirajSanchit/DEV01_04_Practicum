@@ -1,7 +1,10 @@
 package phonezilla.dev01_04_practicum;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -23,9 +26,35 @@ import com.parse.ParseUser;
 // *** activity itself is listening for tab changes. We'll have to   ***
 // *** replace this later. Remember that TabListener is an interface,***
 // *** so we'll be looking for a replacement interface later.        ***
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
 
     public static final String TAG = MainActivity.class.getSimpleName();
+
+    public static final int SHOOT_PHOTO_REQUEST = 0;
+    public static final int SHOOT_VIDEO_REQUEST = 1;
+    public static final int CHOOSE_PHOTO_REQUEST = 2;
+    public static final int CHOOSE_VIDEO_REQUEST = 3;
+
+
+    //Lets the user take action from the build dialog from action_camera case
+    protected DialogInterface.OnClickListener mDialogClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which){
+                case 0: //Take pictah
+                    Intent shootPhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(shootPhotoIntent, SHOOT_PHOTO_REQUEST);
+                    break;
+                case 1: //neem video
+                    break;
+                case 2: // kies foto
+                    break;
+                case 3: // kies video
+                    break;
+            }
+
+        }
+    };
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -45,8 +74,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         // Get the user cached on disk if present
@@ -101,7 +130,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_add_friends:
                 Intent addFriendIntent = new Intent(this, AddFriendsActivity.class);
                 startActivity(addFriendIntent);
-
+                break;
+            case R.id.action_camera:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setItems(R.array.camera_keuzes, mDialogClickListener);
+                AlertDialog dialog = builder.create();
+                dialog.show();
         }
         return super.onOptionsItemSelected(item);
     }

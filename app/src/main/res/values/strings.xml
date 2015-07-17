@@ -22,5 +22,12 @@
     <string name="empty_inbox">No new messages !</string>
     <string name="empty_friendsbox">Add friends to begin</string>
     <string name="title_activity_add_friends">Add Friends</string>
+    <string name="menu_camera_label">Camera</string>
+    <string-array name="camera_keuzes">
+        <item>Neem Foto</item>
+        <item>Neem Video</item>
+        <item>Kies Foto</item>
+        <item>Kies Video</item>
+    </string-array>
 
 </resources>

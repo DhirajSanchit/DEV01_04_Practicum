@@ -80,6 +80,9 @@ public class FriendsFragment extends ListFragment {
                 }
 
         });
+
+        super.onResume();
+
     }
 
 }
